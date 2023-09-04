@@ -170,6 +170,7 @@ if (doc.IsObject()) {
 ### Remove Element in Array
 There are 2 methods to remove elements in array: `PopBack()` pops the last
 element and `Erase()` removes range elements.
+
 ```c++
 // doc = [1, 2, 3, 0]
 

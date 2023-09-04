@@ -83,43 +83,256 @@ D:.
 
 ##  我们需要什么功能
 
-1.   字符串与json对象的相互转换；
-2.   从JSON对象中解析某个特定的元素。
+1.   字符串与$json$对象的相互转换；
+2.   向`json`对象中添加元素。
+3.   从$JSON$对象中解析某个特定的元素。
+
+## 创建一个json对象并初始化
+
+```c++
+sonic_json::Node node;//创建对象
+node.setObject();//初始化对象
+```
 
 ## 向json对象中添加key与value
 
 ```c++
+sonic_json::Allocator alloc;
 node.SetObject();//将接送对象置空
-node.AddMember("Key", NodeType("Value", alloc), alloc);
+node.AddMember("Key", NodeType("Value"), alloc);
 ```
 
+函数`AddMember`有三个参数，第一个是`key`值，第二个是value，第三个是使用内存分配器。
 
+通过这个函数，我们可以把常见类型的值都添加到`json`对象中。
 
 ## 解析一个json字符
 
 ```c++
+  sonic_json::WriteBuffer wb;
+  doc.Serialize(wb);
+  std::cout << wb.ToString() << std::endl;
+```
+
+### 学舌
+
+```c++
+#include <iostream>
+#include <string>
+
 #include "sonic/sonic.h"
 
-#include <string>
-#include <iostream>
+using NodeType = sonic_json::Node;
+using Allocator = typename NodeType::AllocatorType;
+using member_itr_type = typename sonic_json::Document::MemberIterator;
+
+void print_member(member_itr_type m) {
+  const sonic_json::Node& key = m->name;
+  sonic_json::Node& value = m->value;
+  if (key.IsString()) {
+    std::cout << "Key is: " << key.GetString() << std::endl;
+  } else {
+    std::cout << "Incoreect key type!\n";
+    return;
+  }
+  if (value.IsInt64()) {
+    std::cout << "Value is " << value.GetInt64() << std::endl;
+  }
+  else if(value.IsArray()) {std::cout << "Value is " << "array" << std::endl;}
+  else if(value.IsObject()) {std::cout << "Value is " << "object" << std::endl;}
+  else if(value.IsStringConst()) {std::cout << "Value is " << "object" << std::endl;}
+  else std::cout << "not have value." << std::endl;
+
+
+    sonic_json::Document doc;
+auto& alloc = doc.GetAllocator();
+
+doc.SetObject();
+doc.AddMember("key1", NodeType(1), alloc);
+
+{
+  NodeType node;
+  node.SetArray();
+  doc.AddMember("key2", std::move(node), alloc);
+}
+
+sonic_json::WriteBuffer wb;
+doc.Serialize(wb);
+std::cout << wb.ToString() << std::endl; // {"key1": 1, "key2":[]}
+  return;
+}
+
+void set_new_value(member_itr_type m) {
+  sonic_json::Node& value = m->value;
+  value.SetInt64(2);
+  return;
+}
 
 int main()
 {
+  NodeType node;
+  Allocator alloc;
+
+  node.SetObject();
+  node.AddMember("Key", NodeType("Value", alloc), alloc);
+  std::cout << "Add member successfully!\n";
+
+  auto x = node.FindMember("Key");
+  std::cout << "Before Setting new value:\n";
+      print_member(x);
+
   std::string json = R"(
-    {
+  {
       "a": 1,
       "b": 2
-    }
+      }
   )";
 
   sonic_json::Document doc;
   doc.Parse(json);
 
+  if (doc.HasParseError()) 
+  {
+      std::cout << "Parse failed!\n";
+      return -1;
+  }
+
+  // Find member by key
+  if (!doc.IsObject()) // Check JSON value type.
+  {  
+      std::cout << "Incorrect doc type!\n";
+      return -1;
+  }
+
+  auto m = doc.FindMember("a");
+  if (m != doc.MemberEnd()) 
+  {
+    std::cout << "Before Setting new value:\n";
+    print_member(m);
+    std::cout << "After Setting value:\n";
+    set_new_value(m);
+    print_member(m);
+  } else {
+      std::cout << "Find key doesn't exist!\n";
+  }
+
   sonic_json::WriteBuffer wb;
   doc.Serialize(wb);
-  std::cout << wb.ToString() << std::endl;
+  std::cout << wb.ToString() << std::endl; // {"key1": 1, "key2":[]}
+
+  return 0;
 }
-// g++ -I./include/ -march=haswell --std=c++11 -O3 example/parse_and_serialize.cpp -o example/parse_and_serialize
 ```
 
-上述代码为官方提供的代码之一，我们可以发现对于`sonic_json::Document`类有方法`parse( string& )`、`Serialize( WriteBuffer& )`
+### 测试
+
+```c++
+#include <iostream>
+#include <string>
+
+#include "sonic/sonic.h"
+
+using NodeType = sonic_json::Node;
+using Allocator = typename NodeType::AllocatorType;
+using member_itr_type = typename sonic_json::Document::MemberIterator;
+
+void print_member(member_itr_type m) {
+  const sonic_json::Node& key = m->name;
+  sonic_json::Node& value = m->value;
+  if (key.IsString()) {
+    std::cout << "Key is: " << key.GetString() << std::endl;
+  } else {
+    std::cout << "Incoreect key type!\n";
+    return;
+  }
+  if (value.IsInt64()) {
+    std::cout << "Value is " << value.GetInt64() << std::endl;
+  }
+  else if(value.IsArray()) {std::cout << "Value is " << "array" << std::endl;}
+  else if(value.IsObject()) {std::cout << "Value is " << "object" << std::endl;}
+  else if(value.IsStringConst()) {std::cout << "Value is " << "object" << std::endl;}
+  else std::cout << "not have value." << std::endl;
+
+
+    sonic_json::Document doc;
+    auto& alloc = doc.GetAllocator();
+
+    doc.SetObject();
+    doc.AddMember("key1", NodeType(1), alloc);
+
+{
+  NodeType node;
+  node.SetArray();
+  doc.AddMember("key2", std::move(node), alloc);
+}
+
+sonic_json::WriteBuffer wb;
+doc.Serialize(wb);
+std::cout << wb.ToString() << std::endl; // {"key1": 1, "key2":[]}
+  return;
+}
+
+void set_new_value(member_itr_type m) {
+  sonic_json::Node& value = m->value;
+  value.SetInt64(2);
+  return;
+}
+
+int main()
+{
+  sonic_json::Document doc;
+  auto& alloc = doc.GetAllocator();
+  doc.SetObject();
+  doc.AddMember("key1", NodeType(1), alloc);
+  {
+    NodeType node;
+    node.SetArray();
+    node.PushBack(NodeType(1.0), alloc);
+    doc.AddMember("key2", std::move(node), alloc);
+    node.SetArray();
+    node.PushBack(NodeType("字符串"), alloc);
+    doc.AddMember("key3", std::move(node), alloc);
+    node.SetObject();
+    node.AddMember("key_sson", NodeType((int)1), alloc);
+    node.AddMember("son_key1", NodeType("123"), alloc);
+    doc.AddMember("ks", std::move(node), alloc);
+    //必须有初始化
+    // node.AddMember("son_key1", NodeType(1), alloc);
+    // node.PushBack(NodeType("admin"),alloc);
+    // node.PushBack(NodeType(1),alloc);
+
+  }
+
+  sonic_json::WriteBuffer wb;
+  doc.Serialize(wb);
+  std::cout << wb.ToString() << std::endl; // {"key1": 1, "key2":[]}
+
+  return 0;
+}
+
+/*
+g++ -I../include/ -march=haswell --std=c++11 1.cpp -o 1
+*/
+```
+
+在我测试`AddMember`函数时，发现
+
+# API
+
+|            名             |                        功能                        |
+| :-----------------------: | :------------------------------------------------: |
+|  `sonic_json::Allocator`  |                  自带的内存分配器                  |
+|          `Set*`           |              将一个`json`对象设置为空              |
+|          `Add*`           | 将`key`与`value`使用一个内存分配器添加到一个对象中 |
+|           `Is*`           |                    用于判断类型                    |
+|          `Get*`           |        根据`value`类型判断使用`get`什么类型        |
+|       `PushBack()`        |     将一个元素添加到数组中，需要使用内存分配器     |
+|        `PopBack()`        |                  弹出最后一个元素                  |
+| `sonic_json::WriteBuffer` |          存储j$json$对象1解析得到的字符串          |
+|                           |             删除$begin$~$end-1$的元素              |
+|     `RemoveMember()`      |               删除指定$key$值的元素                |
+|            ``             |                                                    |
+|                           |                                                    |
+|                           |                                                    |
+|                           |                                                    |
+
