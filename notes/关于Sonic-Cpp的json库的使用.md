@@ -86,6 +86,15 @@ D:.
 1.   字符串与json对象的相互转换；
 2.   从JSON对象中解析某个特定的元素。
 
+## 向json对象中添加key与value
+
+```c++
+node.SetObject();//将接送对象置空
+node.AddMember("Key", NodeType("Value", alloc), alloc);
+```
+
+
+
 ## 解析一个json字符
 
 ```c++

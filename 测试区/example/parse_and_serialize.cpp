@@ -1,10 +1,9 @@
+#include <iostream>
+#include <string>
+
 #include "sonic/sonic.h"
 
-#include <string>
-#include <iostream>
-
-int main()
-{
+int main() {
   std::string json = R"(
     {
       "a": 1,
@@ -18,5 +17,7 @@ int main()
   sonic_json::WriteBuffer wb;
   doc.Serialize(wb);
   std::cout << wb.ToString() << std::endl;
+  return 0;
 }
-// g++ -I./include/ -march=haswell --std=c++11 -O3 example/parse_and_serialize.cpp -o example/parse_and_serialize
+// g++ -I../include/ -march=haswell --std=c++11 parse_and_serialize.cpp -o
+// parse_and_serialize

@@ -14,8 +14,8 @@ or `-march=haswell` to support.
 Sonic-Cpp assumes all input strings are encoded using UTF-8 and won't verify
 by default
 
-#### Parse from a string
-The simplest way is calling Parse() methods:
+#### 从字符串中解析
+最简单的方法是调用 Parse() 方法：
 ```c++
 #include "sonic/sonic.h"
 // ...
@@ -29,7 +29,7 @@ if (doc.HasParseError()) {
 }
 ```
 
-#### Serialize to a string
+#### 序列化为字符串
 ```c++
 #include "sonic/sonic.h"
 // ...
@@ -37,45 +37,52 @@ sonic_json::WriteBuffer wb;
 doc.Serialize(wb);
 std::cout << wb.ToString() << std::endl;
 ```
-### Node
-Node is the present for JSON value and supports all JSON value manipulation.
+### 节点
+Node 存在于 JSON 值并支持所有 JSON 值操作。
 
 ### Document
-Document is the manager of Nodes. Sonic-Cpp organizes JSON value as a tree. 
-Document also the root of JSON value tree. There is an allocator in Document,
-which you should use to allocate memory for Node and Document.
+Document是Node的管理者。 Sonic-Cpp 将 JSON 值组织为树。
 
-### Query in object
+Document也是 JSON 值树的根。 Document中有一个分配器，
+
+您应该使用它来为 Node 和 Document 分配内存。
+
+### 在对象中查询
+
+查找成员有两种方法：`operator[]` or `FindMember`。 我们推荐
+使用`FindMember`.
+
 There are two ways to find members: `operator[]` or `FindMember`. We recommend 
 using `FindMember`.
+
 ```c++
 #include "sonic/sonic.h"
 // ...
 using AllocatorType = typename sonic_json::Allocator;
 sonic_json::Node node;
 AllocatorType alloc;
-// Add members for node
+// 为节点添加成员
 
-// find member by key
-if (node.IsObject()) { // Note: CHECK NODE TYPE IS VERY IMPORTANT.
+// 通过键查找成员
+if (node.IsObject()) { // 注意：检查节点类型非常重要。
   const char* key = "key";
-  auto m = node.FindMember(key); // recommended
+  auto m = node.FindMember(key); // 受到推崇的
   if (m != node.MemberEnd()) {
-    // do something
+    // 做一点事
   }
 }
 
-// Second method
+// 第二种方法
 if (node.IsObject()) {
   const char* key1 = "key1";
   const char* key2 = "key2";
-  // You must sure that the keys are all existed.
+  // 您必须确保密钥全部存在。
   sonic_json::Node& val = node[key1][key2];
-  // If key doesn't exist, operator[] will return reference to a static node
-  // which type is Null. You SHOULD NOT MODIFY this static node. In this case,
-  // FindMember is a better choice.
+  // 如果 key 不存在，operator[] 将返回对静态节点的引用
+  // 哪种类型为 Null。 您不应该修改此静态节点。 在这种情况下，
+  // FindMember 是一个更好的选择。
   if (val.IsNull()) {
-    // error path
+    // 错误路径
   }
 }
 ```
@@ -91,24 +98,24 @@ if (node.IsInt64()) {
   std::cout << node.GetInt64() << std::endl;
 }
 ```
-The following Is\*, Get\* and Set\* methods are supported:
+支持的方法： `Is*`, `Get*` and `Set*` ，如下：
 
-- IsNull(), SetNull()
-- IsBoo(), GetBool(), SetBool(bool)
-- IsString(), GetString(), GetStringView(), SetString(const char*, size_t)
-- IsNumber()
-- IsArray(), SetArray()
-- IsObject(), SetObject()
-- IsTrue(), IsFalse()
-- IsDouble(), GetDouble(), SetDouble(double)
-- IsInt64(), GetInt64(), SetInt64(int64_t)
-- IsUint64(), GetUint64(), SetUint64_t(uint64_t)
+- `IsNull()`, `SetNull()`
+- `IsBoo()`, `GetBool()`, `SetBool(bool)`
+- `sString()`, `GetString()`, `GetStringView()`, `SetString(const char*, size_t)`
+- `IsNumber()`
+- `IsArray()`,` SetArray()`
+- `IsObject()`, `SetObject()`
+- `IsTrue()`, `IsFalse()`
+- `IsDouble()`, `GetDouble()`, `SetDouble(double)`
+- `IsInt64()`, `GetInt64()`, `SetInt64(int64_t)`
+- `IsUint64()`, `GetUint64()`, `SetUint64_t(uint64_t)`
 
-> Note: GetString() will return std::string. GetStringView() has better
-performance.
+> 注意：`GetString()` 将返回 `std::string`。 `GetStringView()` 有更好表现。
 
-### Add Member for Object
-`AddMember` method only accepts rvalue as the argument.
+### 为对象添加成员
+`AddMember` 方法仅接受右值作为参数。
+
 ```c++
 using NodeType = sonic_json::Node;
 sonic_json::Document doc;
