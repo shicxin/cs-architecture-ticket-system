@@ -25,7 +25,8 @@ categories: Cplusplus
 
 4.   默认安装修改密码
 
-     >   `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';`
+     >   `ALTER USER 'root'
+'localhost' IDENTIFIED WITH mysql_native_password BY '123456';`
      >
      >   
      >

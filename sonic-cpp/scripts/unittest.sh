@@ -20,7 +20,8 @@ UNIT_TEST_ARCH=haswell
 UNIT_TEST_DISPATCH=static
 UNIT_TEST_SANITIZER=gcc
 
-PARSED_ARGUMENTS=$(getopt -o gch --long gcc,clang,help,arch::,dispatch:: -- "$@")
+PARSED_ARGUMENTS=$(getopt -o gch --long gcc,clang,help,arch::,dispatch:: -- "$
+")
 VALID_ARGUMENTS=$?
 if [ "$VALID_ARGUMENTS" != "0" ]; then
     usage

@@ -36,9 +36,12 @@ class WriteBuffer {
   }
 
   /**
-   * @brief Return the context in the buffer.
-   * @return a null-terminate string.
-   * @note a '\0' will be added in the ending, so, this function is not
+   * 
+brief Return the context in the buffer.
+   * 
+return a null-terminate string.
+   * 
+note a '\0' will be added in the ending, so, this function is not
    * thread-safe.
    */
   sonic_force_inline const char* ToString() const {
@@ -52,19 +55,23 @@ class WriteBuffer {
   sonic_force_inline bool Empty() const { return stack_.Empty(); }
 
   /**
-   * @brief Increase the capacity of buffer if new_cap is greater than the
+   * 
+brief Increase the capacity of buffer if new_cap is greater than the
    * current capacity(). Otherwise, do nothing.
    */
   sonic_force_inline void Reserve(size_t new_cap) { stack_.Reserve(new_cap); }
 
   /**
-   * @brief Erases all contexts in the buffer.
+   * 
+brief Erases all contexts in the buffer.
    */
   sonic_force_inline void Clear() { stack_.Clear(); }
 
   /**
-   * @brief Push a value into buffer
-   * @param v the pushed value, as char, int...
+   * 
+brief Push a value into buffer
+   * 
+param v the pushed value, as char, int...
    */
   template <typename T>
   sonic_force_inline void Push(T v) {
@@ -72,9 +79,12 @@ class WriteBuffer {
   }
 
   /**
-   * @brief Push a string into the buffer.
-   * @param s the beginning of string
-   * @param n the string size
+   * 
+brief Push a string into the buffer.
+   * 
+param s the beginning of string
+   * 
+param n the string size
    */
   sonic_force_inline void Push(const char* s, size_t n) { stack_.Push(s, n); }
   sonic_force_inline void PushUnsafe(const char* s, size_t n) {
@@ -101,8 +111,10 @@ class WriteBuffer {
   }
 
   /**
-   * @brief Get the top value in the buffer.
-   * @return the value pointer
+   * 
+brief Get the top value in the buffer.
+   * 
+return the value pointer
    */
   template <typename T>
   sonic_force_inline const T* Top() const {
@@ -114,7 +126,8 @@ class WriteBuffer {
   }
 
   /**
-   * @brief Pop the top-N value in the buffer.
+   * 
+brief Pop the top-N value in the buffer.
    */
   template <typename T>
   sonic_force_inline void Pop(size_t n) {
@@ -122,14 +135,17 @@ class WriteBuffer {
   }
 
   /**
-   * @brief Increase the capacity of buffer if cnt is greater than the
+   * 
+brief Increase the capacity of buffer if cnt is greater than the
    * remained capacity in the buffer. Otherwise, do nothing.
    */
   sonic_force_inline char* Grow(size_t cnt) { return stack_.Grow(cnt); }
 
   /**
-   * @brief Get the end of the buffer.
-   * @return the value pointer into the ending.
+   * 
+brief Get the end of the buffer.
+   * 
+return the value pointer into the ending.
    */
   template <typename T>
   sonic_force_inline T* End() {
@@ -141,8 +157,10 @@ class WriteBuffer {
   }
 
   /**
-   * @brief Get the begin of the buffer.
-   * @return the value pointer into the begin.
+   * 
+brief Get the begin of the buffer.
+   * 
+return the value pointer into the begin.
    */
   template <typename T>
   sonic_force_inline T* Begin() {

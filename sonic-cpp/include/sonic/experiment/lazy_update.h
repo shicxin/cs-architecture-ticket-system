@@ -78,12 +78,15 @@ static inline SonicError UpdateNodeLazy(NodeType &target, NodeType &source,
 }  // namespace internal
 
 /**
- * @brief UpdateLazy will update the target json with the source json, and
+ * 
+brief UpdateLazy will update the target json with the source json, and
  * return the updated json. The update rules is: If the key is exist, the update
  * the value of target from source json. Otherwise, insert the key/value pairs
  * from source json.
- * @param target the target json
- * @param source the source json
+ * 
+param target the target json
+ * 
+param source the source json
  */
 static inline std::string UpdateLazy(StringView target, StringView source) {
   using Allocator = Node::AllocatorType;

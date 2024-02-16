@@ -19,7 +19,8 @@ Providing a reduced test code is a recommended way for reporting issues. Then ca
 - Just in issues
 
 ### 3. Security Bugs
-Please do not report the safe disclosure of bugs to public issues. Contact us by [Support Email](mailto:sonic@bytedance.com)
+Please do not report the safe disclosure of bugs to public issues. Contact us by [Support Email](mailto:sonic
+bytedance.com)
 
 ## Submit a Pull Request
 Before you submit your Pull Request (PR) consider the following guidelines:

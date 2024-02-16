@@ -28,8 +28,10 @@ class GenericDocument : public NodeType {
   using Allocator = typename node_traits::alloc_type;
 
   /**
-   * @brief Default GenericDocument constructor.
-   * @param allocator Allocator pointer to maintain all nodes' memory. If it is
+   * 
+brief Default GenericDocument constructor.
+   * 
+param allocator Allocator pointer to maintain all nodes' memory. If it is
    * not given or nullptr, GenericDocument will create one by itself.
    */
   GenericDocument(Allocator* allocator = nullptr)
@@ -42,7 +44,8 @@ class GenericDocument : public NodeType {
 
   GenericDocument(const GenericDocument& rhs) = delete;
   /**
-   * @brief Move constructor
+   * 
+brief Move constructor
    */
   GenericDocument(GenericDocument&& rhs)
       : NodeType(std::forward<NodeType>(rhs)),
@@ -56,7 +59,8 @@ class GenericDocument : public NodeType {
   }
 
   /**
-   * @brief Move assignement
+   * 
+brief Move assignement
    */
   GenericDocument& operator=(GenericDocument&& rhs) {
     // Step1: clear self memory
@@ -81,7 +85,8 @@ class GenericDocument : public NodeType {
   }
 
   /**
-   * @brief Swap function
+   * 
+brief Swap function
    */
   GenericDocument& Swap(GenericDocument& rhs) {
     NodeType::Swap(rhs);
@@ -95,22 +100,28 @@ class GenericDocument : public NodeType {
   }
 
   /**
-   * @brief Get the reference of memory allocator.
+   * 
+brief Get the reference of memory allocator.
    */
   sonic_force_inline Allocator& GetAllocator() { return *alloc_; }
 
   /**
-   * @brief Get the reference of memory allocator.
+   * 
+brief Get the reference of memory allocator.
    */
   sonic_force_inline const Allocator& GetAllocator() const { return *alloc_; }
 
   ~GenericDocument() { destroyDom(); }
 
   /**
-   * @brief Parse by std::string
-   * @param parseFlags combination of different ParseFlag.
-   * @param json json string
-   * @note If using memorypool allocator, memory will be cleared every time
+   * 
+brief Parse by std::string
+   * 
+param parseFlags combination of different ParseFlag.
+   * 
+param json json string
+   * 
+note If using memorypool allocator, memory will be cleared every time
    * before parsing to avoid memory overuse.
    */
   template <unsigned parseFlags = kParseDefault>
@@ -125,12 +136,18 @@ class GenericDocument : public NodeType {
   }
 
   /**
-   * @brief Parse by std::string
-   * @param parseFlags combination of different ParseFlag.
-   * @param json json string pointer
-   * @param len json string size
-   * @param path the query path of the json keys
-   * @note If using memorypool allocator, memory will be cleared every time
+   * 
+brief Parse by std::string
+   * 
+param parseFlags combination of different ParseFlag.
+   * 
+param json json string pointer
+   * 
+param len json string size
+   * 
+param path the query path of the json keys
+   * 
+note If using memorypool allocator, memory will be cleared every time
    * before parsing to avoid memory overuse.
    */
   template <unsigned parseFlags = kParseDefault,
@@ -148,19 +165,22 @@ class GenericDocument : public NodeType {
     return parseOnDemandImpl<parseFlags, JPStringType>(data, len, path);
   }
   /**
-   * @brief Check parse has error
+   * 
+brief Check parse has error
    */
   bool HasParseError() const { return parse_result_.Error() != kErrorNone; }
 
   /*
-   * @brief Get parse error no.
+   * 
+brief Get parse error no.
    */
   sonic_force_inline SonicError GetParseError() const {
     return parse_result_.Error();
   }
 
   /*
-   * @brief Get where has parse error
+   * 
+brief Get where has parse error
    */
   sonic_force_inline size_t GetErrorOffset() const {
     return parse_result_.Offset();

@@ -55,19 +55,26 @@ class DNode : public GenericNode<DNode<Allocator>> {
   // constructor
   using BaseNode::BaseNode;
   /**
-   * @brief move constructor
-   * @param rhs moved value, must be a rvalue reference
+   * 
+brief move constructor
+   * 
+param rhs moved value, must be a rvalue reference
    */
   DNode() noexcept : BaseNode() {}
   DNode(DNode&& rhs) noexcept : BaseNode() { rawAssign(rhs); }
   DNode(const DNode& rhs) = delete;
 
   /**
-   * @brief copy constructor
-   * @tparam rhs class Allocator type
-   * @param rhs copied value reference
-   * @param alloc allocator reference that maintain this node memory
-   * @param copyString false defautlly, copy const string or not.
+   * 
+brief copy constructor
+   * 
+tparam rhs class Allocator type
+   * 
+param rhs copied value reference
+   * 
+param alloc allocator reference that maintain this node memory
+   * 
+param copyString false defautlly, copy const string or not.
    */
   template <typename SourceAllocator>
   DNode(const DNode<SourceAllocator>& rhs, Allocator& alloc,
@@ -125,7 +132,8 @@ class DNode : public GenericNode<DNode<Allocator>> {
   }
 
   /**
-   * @brief destructor
+   * 
+brief destructor
    */
   ~DNode() {
     if (!Allocator::kNeedFree) {
@@ -137,9 +145,12 @@ class DNode : public GenericNode<DNode<Allocator>> {
   DNode& operator=(const DNode& rhs) = delete;
   DNode& operator=(DNode& rhs) = delete;
   /**
-   * @brief move assignment
-   * @param rhs rvalue reference to right hand side
-   * @return DNode& this reference
+   * 
+brief move assignment
+   * 
+param rhs rvalue reference to right hand side
+   * 
+return DNode& this reference
    */
   DNode& operator=(DNode&& rhs) {
     if (sonic_likely(this != &rhs)) {
@@ -157,11 +168,16 @@ class DNode : public GenericNode<DNode<Allocator>> {
 
   using BaseNode::operator==;
   /**
-   * @brief compare with another node
-   * @tparam SourceAllocator Allocator type of rhs
-   * @param rhs right hand side
-   * @retval true equals to
-   * @retval false not equals to
+   * 
+brief compare with another node
+   * 
+tparam SourceAllocator Allocator type of rhs
+   * 
+param rhs right hand side
+   * 
+retval true equals to
+   * 
+retval false not equals to
    */
   template <typename SourceAllocator>
   bool operator==(const DNode<SourceAllocator>& rhs) const noexcept {
@@ -219,7 +235,8 @@ class DNode : public GenericNode<DNode<Allocator>> {
 
   using BaseNode::operator!=;
   /**
-   * @brief operator!=
+   * 
+brief operator!=
    */
   template <typename SourceAllocator>
   bool operator!=(const DNode<SourceAllocator>& rhs) const noexcept {
@@ -233,10 +250,14 @@ class DNode : public GenericNode<DNode<Allocator>> {
   using BaseNode::HasMember;
 
   /**
-   * @brief Create a map to trace all members of this object.
-   * @param alloc allocator that maintain this node's memory
-   * @retval true successful
-   * @retval false failed, which means that no memory can be allocated by
+   * 
+brief Create a map to trace all members of this object.
+   * 
+param alloc allocator that maintain this node's memory
+   * 
+retval true successful
+   * 
+retval false failed, which means that no memory can be allocated by
    * allocator.
    */
   bool CreateMap(Allocator& alloc) {
@@ -259,7 +280,8 @@ class DNode : public GenericNode<DNode<Allocator>> {
   }
 
   /**
-   * @brief Destory the created map. This means that you don't want maintain the
+   * 
+brief Destory the created map. This means that you don't want maintain the
    * map anymore.
    */
   void DestroyMap() {
@@ -274,13 +296,20 @@ class DNode : public GenericNode<DNode<Allocator>> {
   using BaseNode::RemoveMember;
 
   /**
-   * @brief Copy another node depthly.
-   * @tparam SourceAllocator another-node's allocator type
-   * @param rhs source node.
-   * @param alloc reference of allocator which maintains this node's memory
-   * @param copyString whether copy const string in source node, default is not.
-   * @return DNode& reference to this node to support streaming APIs
-   * @node This function will recursively. If json-tree is too depth, this
+   * 
+brief Copy another node depthly.
+   * 
+tparam SourceAllocator another-node's allocator type
+   * 
+param rhs source node.
+   * 
+param alloc reference of allocator which maintains this node's memory
+   * 
+param copyString whether copy const string in source node, default is not.
+   * 
+return DNode& reference to this node to support streaming APIs
+   * 
+node This function will recursively. If json-tree is too depth, this
    * function maybe cause stackoveflow.
    */
   template <typename SourceAllocator>
@@ -292,8 +321,10 @@ class DNode : public GenericNode<DNode<Allocator>> {
   }
 
   /**
-   * @brief move another node to this.
-   * @param rhs source node
+   * 
+brief move another node to this.
+   * 
+param rhs source node
    */
 
  private:

@@ -184,7 +184,8 @@ SHORT_NAMES            = NO
 # If the JAVADOC_AUTOBRIEF tag is set to YES then doxygen will interpret the
 # first line (until the first dot) of a Javadoc-style comment as the brief
 # description. If set to NO, the Javadoc-style will behave just like regular Qt-
-# style comments (thus requiring an explicit @brief command for a brief
+# style comments (thus requiring an explicit 
+brief command for a brief
 # description.)
 # The default value is: NO.
 
@@ -251,16 +252,20 @@ TAB_SIZE               = 4
 # the documentation. An alias has the form:
 # name=value
 # For example adding
-# "sideeffect=@par Side Effects:^^"
-# will allow you to put the command \sideeffect (or @sideeffect) in the
+# "sideeffect=
+par Side Effects:^^"
+# will allow you to put the command \sideeffect (or 
+sideeffect) in the
 # documentation, which will result in a user-defined paragraph with heading
 # "Side Effects:". Note that you cannot put \n's in the value part of an alias
 # to insert newlines (in the resulting output). You can put ^^ in the value part
 # of an alias to insert a newline as if a physical newline was in the original
 # file. When you need a literal { or } or , in the value part of an alias you
 # have to escape them by means of a backslash (\), this can lead to conflicts
-# with the commands \{ and \} for these it is advised to use the version @{ and
-# @} or use a double escape (\\{ and \\})
+# with the commands \{ and \} for these it is advised to use the version 
+{ and
+# 
+} or use a double escape (\\{ and \\})
 
 ALIASES                =
 
@@ -1679,8 +1684,10 @@ MATHJAX_FORMAT         = HTML-CSS
 # Content Delivery Network so you can quickly see the result without installing
 # MathJax. However, it is strongly recommended to install a local copy of
 # MathJax from https://www.mathjax.org before deployment. The default value is:
-# - in case of MathJax version 2: https://cdn.jsdelivr.net/npm/mathjax@2
-# - in case of MathJax version 3: https://cdn.jsdelivr.net/npm/mathjax@3
+# - in case of MathJax version 2: https://cdn.jsdelivr.net/npm/mathjax
+2
+# - in case of MathJax version 3: https://cdn.jsdelivr.net/npm/mathjax
+3
 # This tag requires that the tag USE_MATHJAX is set to YES.
 
 MATHJAX_RELPATH        =
