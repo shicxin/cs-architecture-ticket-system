@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/muduo_server.dir/1.cpp.o -o muduo_server 
